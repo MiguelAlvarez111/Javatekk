@@ -17,6 +17,7 @@ public final class VoxelRenderer {
     private final ShaderProgram shader;
     private final List<ChunkMesh> chunkMeshes = new ArrayList<>();
     private final Vector3 worldCenter = new Vector3();
+    private final Vector3 fogColor = new Vector3(0.52f, 0.74f, 0.92f);
     private int generatedFaceCount;
     private int generatedIndexCount;
 
@@ -35,6 +36,10 @@ public final class VoxelRenderer {
 
         shader.bind();
         shader.setUniformMatrix("u_projViewTrans", camera.combined);
+        shader.setUniformf("u_cameraPosition", camera.position);
+        shader.setUniformf("u_fogColor", fogColor);
+        shader.setUniformf("u_fogNear", 58.0f);
+        shader.setUniformf("u_fogFar", 135.0f);
         for (ChunkMesh chunkMesh : chunkMeshes) {
             chunkMesh.render(shader);
         }
@@ -118,9 +123,11 @@ public final class VoxelRenderer {
             attribute vec4 a_color;
             uniform mat4 u_projViewTrans;
             varying vec4 v_color;
+            varying vec3 v_worldPosition;
 
             void main() {
                 v_color = a_color;
+                v_worldPosition = a_position;
                 gl_Position = u_projViewTrans * vec4(a_position, 1.0);
             }
             """;
@@ -133,9 +140,17 @@ public final class VoxelRenderer {
             #endif
 
             varying vec4 v_color;
+            varying vec3 v_worldPosition;
+            uniform vec3 u_cameraPosition;
+            uniform vec3 u_fogColor;
+            uniform float u_fogNear;
+            uniform float u_fogFar;
 
             void main() {
-                gl_FragColor = v_color;
+                float cameraDistance = distance(v_worldPosition, u_cameraPosition);
+                float fogAmount = smoothstep(u_fogNear, u_fogFar, cameraDistance);
+                vec3 color = mix(v_color.rgb, u_fogColor, fogAmount);
+                gl_FragColor = vec4(color, v_color.a);
             }
             """;
     }

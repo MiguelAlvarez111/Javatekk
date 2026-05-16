@@ -10,6 +10,6 @@ El mundo esta dividido en chunks de `16x16x16`. Cada bloque no se guarda como un
 
 Para renderizar, el proyecto no dibuja cubo por cubo. En cambio, construye un solo mesh por chunk. Tambien usa hidden-face culling: si una cara esta pegada contra otro bloque opaco, esa cara no se genera. Eso reduce mucho la cantidad de geometria comparado con dibujar todos los cubos completos.
 
-La demo se puede recorrer con una camara fly mode. Uso WASD para moverme, el mouse para mirar, Space para subir, Shift para bajar, ESC para liberar o capturar el mouse y F1 para mostrar u ocultar la ayuda.
+La demo se puede recorrer con una camara fly mode. Uso WASD para moverme, el mouse para mirar, Space para subir, Shift para bajar, ESC para liberar o capturar el mouse y F1 para mostrar u ocultar la ayuda. Tambien tiene limites simples para no salirse del mundo, colision basica contra bloques opacos y niebla para que el horizonte no se vea como un vacio infinito.
 
 Lo que queda para una version futura seria agregar greedy meshing, frustum culling, chunks infinitos, colisiones, texturas y optimizaciones mas avanzadas de buffers. Pero para este MVP ya queda demostrada la base: almacenamiento compacto, chunks, culling de caras ocultas, un mesh por chunk y navegacion 3D.

@@ -56,6 +56,8 @@ gradle lwjgl3:run
 - Un `Mesh` por chunk.
 - No se crean cubos individuales ni se hace un draw call por bloque.
 - Colores por vertice, sin texturas obligatorias.
+- Niebla simple por shader para suavizar el horizonte.
+- Limites de mundo y colision simple de camara contra bloques opacos.
 
 ## Trabajo futuro
 

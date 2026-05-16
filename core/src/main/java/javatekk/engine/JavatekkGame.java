@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import javatekk.render.VoxelRenderer;
@@ -34,7 +35,8 @@ public final class JavatekkGame extends ApplicationAdapter {
             voxelRenderer.camera(),
             CAMERA_SPEED,
             new Vector3(VoxelWorld.WORLD_WIDTH * 0.5f, 18.0f, VoxelWorld.WORLD_LENGTH * 0.5f + 24.0f),
-            new Vector3(VoxelWorld.WORLD_WIDTH * 0.5f, 10.0f, VoxelWorld.WORLD_LENGTH * 0.5f)
+            new Vector3(VoxelWorld.WORLD_WIDTH * 0.5f, 10.0f, VoxelWorld.WORLD_LENGTH * 0.5f),
+            world
         );
 
         spriteBatch = new SpriteBatch();
@@ -52,7 +54,7 @@ public final class JavatekkGame extends ApplicationAdapter {
         float deltaTime = Math.min(Gdx.graphics.getDeltaTime(), 1.0f / 15.0f);
         flyCameraController.update(deltaTime);
 
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        HdpiUtils.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClearColor(SKY_RED, SKY_GREEN, SKY_BLUE, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         voxelRenderer.render();
@@ -122,12 +124,14 @@ public final class JavatekkGame extends ApplicationAdapter {
             12.0f, top - 24.0f, 1.0f, 1.0f, 1.0f, 1.0f);
         drawText("Chunks: 4x1x4 | Block storage: byte[] | Hidden-face culling",
             12.0f, top - 44.0f, 0.78f, 0.92f, 1.0f, 1.0f);
+        drawText("Fog + world bounds | Fly mode con colision simple",
+            12.0f, top - 64.0f, 0.78f, 1.0f, 0.82f, 1.0f);
         spriteBatch.end();
     }
 
     private void drawDetailedHud() {
         Vector3 position = flyCameraController.position();
-        float top = Gdx.graphics.getHeight() - 78.0f;
+        float top = Gdx.graphics.getHeight() - 98.0f;
 
         spriteBatch.begin();
         drawText("FPS: " + Gdx.graphics.getFramesPerSecond(), 12.0f, top, 1.0f, 1.0f, 1.0f, 1.0f);
