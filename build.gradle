@@ -1,0 +1,50 @@
+allprojects {
+    group = 'javatekk'
+    version = '0.1.0'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+}
+
+project(':core') {
+    apply plugin: 'java-library'
+
+    dependencies {
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    }
+}
+
+project(':lwjgl3') {
+    apply plugin: 'application'
+
+    dependencies {
+        implementation project(':core')
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    }
+
+    application {
+        mainClass = 'javatekk.lwjgl3.Lwjgl3Launcher'
+    }
+
+    tasks.named('run') {
+        workingDir = rootProject.projectDir
+        if (System.getProperty('os.name').toLowerCase().contains('mac')) {
+            jvmArgs '-XstartOnFirstThread'
+        }
+    }
+}
