@@ -2,6 +2,8 @@
 
 Javatekk es un motor/prototipo voxel en Java con libGDX + LWJGL3. La demo usa chunks de `16x16x16`, guarda los IDs de bloque en `byte[]`, aplica culling de caras ocultas y permite navegar el mundo en 3D con una camara fly mode.
 
+![Javatekk voxel world demo](docs/javatekk-demo.png)
+
 ## Requisitos
 
 - JDK 17 o superior.
